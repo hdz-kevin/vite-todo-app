@@ -56,7 +56,14 @@ const toggleTodoStatus = (todoId) => { throw new Error("Not implemented"); }
  * 
  * @param {string} todoId
  */
-const deleteTodo = (todoId) => { throw new Error("Not implemented"); }
+const deleteTodo = (todoId) => {
+    // Gets all todo ids and check if `todoId` is among them.
+    if (!state.todos.map(todo => todo.id).includes(todoId)) {
+        throw new Error(`There is no task with id '${todoId}'`);
+    }
+    
+    state.todos = state.todos.filter(todo => todo.id !== todoId);
+};
 
 /**
  * Delete all completed `todos` objects.
