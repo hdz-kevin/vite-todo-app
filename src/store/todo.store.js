@@ -1,9 +1,9 @@
 import { Todo } from "../todos/models/todo.model";
 
 const Filters = {
-    All: 'all',
-    Completed: 'completed',
-    Pending: 'pending',
+    All: 'All',
+    Completed: 'Completed',
+    Pending: 'Pending',
 };
 
 const state = {
@@ -21,7 +21,20 @@ const initStore = () => {
 
 const loadStore = () => { throw new Error("Not implemented"); };
 
-const getTodos = (filter = Filters.All) => { throw new Error("Not implemented") };
+const getTodos = (filter = Filters.All) => {
+    if (Filters[filter] === undefined) {
+        throw new Error(`"${filter}" is not a valid filter.`);
+    }
+
+    const filterTodos = {
+        [Filters.All]: [...state.todos],
+        [Filters.Completed]: state.todos.filter(todo => todo.done),
+        [Filters.Pending]: state.todos.filter(todo => !todo.done),
+    };
+
+                              // break the reference for each individual "todo".
+    return filterTodos[filter].map(todo => ({ ...todo }));
+};
 
 /**
  * 
@@ -55,7 +68,9 @@ export default {
     addTodo,
     deletedCompleted,
     deleteTodo,
+    Filters,
     getCurrentFilter,
+    getTodos,
     initStore,
     loadStore,
     setFilter,
