@@ -15,8 +15,6 @@ const state = {
     filter: Filters.All,
 };
 
-state.todos[1].done = true;
-
 const initStore = () => console.log(state);
 
 const loadStore = () => { throw new Error("Not implemented."); };
@@ -73,9 +71,18 @@ const deleteTodo = (todoId) => {
 const deletedCompleted = () =>
     state.todos = state.todos.filter(todo => !todo.done);
 
-const setFilter = (filter = Filters.All) => { throw new Error("Not implemented"); };
+/**
+ * @param {string} filter [Filters.All | FIlters.Completed | Filters.Pending]
+ */
+const setFilter = (filter = Filters.All) => {
+    if (Filters[filter] === undefined) {
+        throw new Error(`"${filter}" is not a valid filter.`);
+    }
 
-const getCurrentFilter = () => { throw new Error("Not implemented"); };
+    state.filter = filter;
+};
+
+const getCurrentFilter = () => state.filter;
 
 export default {
     addTodo,
