@@ -15,6 +15,8 @@ const state = {
     filter: Filters.All,
 };
 
+state.todos[1].done = true;
+
 const initStore = () => console.log(state);
 
 const loadStore = () => { throw new Error("Not implemented."); };
@@ -66,14 +68,14 @@ const deleteTodo = (todoId) => {
 };
 
 /**
- * Delete all completed `todos` objects.
+ * Delete all completed `todo` objects.
  */
-const deletedCompleted = () => { throw new Error("Not implemented"); }
+const deletedCompleted = () =>
+    state.todos = state.todos.filter(todo => !todo.done);
 
 const setFilter = (filter = Filters.All) => { throw new Error("Not implemented"); };
 
 const getCurrentFilter = () => { throw new Error("Not implemented"); };
-
 
 export default {
     addTodo,
