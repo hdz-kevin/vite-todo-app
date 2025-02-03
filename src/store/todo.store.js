@@ -15,11 +15,9 @@ const state = {
     filter: Filters.All,
 };
 
-const initStore = () => {
-    console.log(state);
-};
+const initStore = () => console.log(state);
 
-const loadStore = () => { throw new Error("Not implemented"); };
+const loadStore = () => { throw new Error("Not implemented."); };
 
 const getTodos = (filter = Filters.All) => {
     if (Filters[filter] === undefined) {
@@ -40,7 +38,13 @@ const getTodos = (filter = Filters.All) => {
  * 
  * @param {string} description Todo descriptions
  */
-const addTodo = (description) => { throw new Error("Not implemented"); }
+const addTodo = (description) => {
+    if (description.length == 0) {
+        throw new Error("Description is required.");
+    }
+    
+    state.todos.push(new Todo(description));
+};
 
 /**
  * 

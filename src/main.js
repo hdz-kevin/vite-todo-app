@@ -5,8 +5,7 @@ import todoStore from "./store/todo.store";
 todoStore.initStore();
 
 console.log(todoStore.getTodos(todoStore.Filters.All));
-console.log(todoStore.getTodos(todoStore.Filters.Completed));
-console.log(todoStore.getTodos(todoStore.Filters.Pending));
-console.log(todoStore.getTodos("pepe"));
+todoStore.addTodo("Buy a pillow");
+console.log(todoStore.getTodos(todoStore.Filters.All));
 
 App("#app");
