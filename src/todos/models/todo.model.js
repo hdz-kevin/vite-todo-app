@@ -17,4 +17,8 @@ export class Todo {
         /** @type {Date} */
         this.createdAt = new Date();
     }
+
+    toggleStatus() {
+        this.done = !this.done;
+    }
 }

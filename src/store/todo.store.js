@@ -20,9 +20,8 @@ const initStore = () => console.log(state);
 const loadStore = () => { throw new Error("Not implemented."); };
 
 const getTodos = (filter = Filters.All) => {
-    if (Filters[filter] === undefined) {
+    if (Filters[filter] === undefined)
         throw new Error(`"${filter}" is not a valid filter.`);
-    }
 
     const filterTodos = {
         [Filters.All]: [...state.todos],
@@ -31,7 +30,7 @@ const getTodos = (filter = Filters.All) => {
     };
 
                               // break the reference for each individual "todo".
-    return filterTodos[filter].map(todo => ({ ...todo }));
+    return filterTodos[filter];//.map(todo => ({ ...todo }));
 };
 
 /**
@@ -39,45 +38,50 @@ const getTodos = (filter = Filters.All) => {
  * @param {string} description Todo descriptions
  */
 const addTodo = (description) => {
-    if (description.length == 0) {
+    if (description.length == 0)
         throw new Error("Description is required.");
-    }
-    
+
     state.todos.push(new Todo(description));
 };
 
 /**
- * 
  * @param {string} todoId
  */
-const toggleTodoStatus = (todoId) => { throw new Error("Not implemented"); }
+const toggleTodoStatus = (todoId) => {
+    // Gets all todo ids and check if `todoId` is among them.
+    if (!state.todos.map(todo => todo.id).includes(todoId))
+        throw new Error(`There is no task with id '${todoId}'`);
+    
+    for (const todo of state.todos) {
+        if (todo.id === todoId) {
+            todo.toggleStatus();
+            break;
+        }
+    }
+};
 
 /**
  * 
  * @param {string} todoId
  */
 const deleteTodo = (todoId) => {
-    // Gets all todo ids and check if `todoId` is among them.
-    if (!state.todos.map(todo => todo.id).includes(todoId)) {
+    if (!state.todos.map(todo => todo.id).includes(todoId))
         throw new Error(`There is no task with id '${todoId}'`);
-    }
-    
+
     state.todos = state.todos.filter(todo => todo.id !== todoId);
 };
 
 /**
  * Delete all completed `todo` objects.
  */
-const deletedCompleted = () =>
-    state.todos = state.todos.filter(todo => !todo.done);
+const deletedCompleted = () => state.todos = state.todos.filter(todo => !todo.done);
 
 /**
  * @param {string} filter [Filters.All | FIlters.Completed | Filters.Pending]
  */
 const setFilter = (filter = Filters.All) => {
-    if (Filters[filter] === undefined) {
+    if (Filters[filter] === undefined)
         throw new Error(`"${filter}" is not a valid filter.`);
-    }
 
     state.filter = filter;
 };
