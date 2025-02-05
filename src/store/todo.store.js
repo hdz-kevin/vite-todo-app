@@ -11,6 +11,7 @@ const state = {
         new Todo("Arm Wrestling workout"),
         new Todo("Talk with my friend"),
         new Todo("Take a bath"),
+        new Todo("Take out the trash"),
     ],
     filter: Filters.All,
 };
@@ -77,7 +78,7 @@ const deleteTodo = (todoId) => {
 const deletedCompleted = () => state.todos = state.todos.filter(todo => !todo.done);
 
 /**
- * @param {string} filter [Filters.All | FIlters.Completed | Filters.Pending]
+ * @param {string} filter Posible values: [Filters.All | FIlters.Completed | Filters.Pending]
  */
 const setFilter = (filter = Filters.All) => {
     if (Filters[filter] === undefined)
