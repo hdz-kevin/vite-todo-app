@@ -1,4 +1,3 @@
-// @ts-ignore
 import html from "./app.html?raw";
 import todoStore from "../store/todo.store";
 import { renderTodos } from "./use-cases";
@@ -42,8 +41,12 @@ export const App = (elementId) => {
     });
 
     todoList.addEventListener("click", (event) => {
-        // @ts-ignore
-        todoStore.toggleTodoStatus(event.target.closest('[data-id]').getAttribute("data-id"));
+        const element = event.target;
+        const todoId = element.closest("[data-id]").getAttribute("data-id");
+        const isDestroyerBtn = element.classList.contains("destroy");
+
+        isDestroyerBtn ? todoStore.deleteTodo(todoId) : todoStore.toggleTodoStatus(todoId);
+
         displayTodos();
     });
 };
