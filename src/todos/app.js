@@ -29,6 +29,7 @@ export const App = (elementId) => {
     // HTML element references
     /** @type {HTMLInputElement} */
     const newTodoInput = document.querySelector(ElementSelectors.NewTodoInput);
+    const todoList = document.querySelector(ElementSelectors.TodoList);
 
     // Listeners
     newTodoInput.addEventListener("keyup", (/** @type {KeyboardEvent} event */ event) => {
@@ -38,5 +39,18 @@ export const App = (elementId) => {
         todoStore.addTodo(newTodoInput.value);
         displayTodos();
         newTodoInput.value = "";
+    });
+
+    todoList.addEventListener("click", (event) => {
+        const isACheckbox = (element) => element.classList.contains("toggle");
+        const element = event.target;
+
+        if (isACheckbox(element)) {
+            // @ts-ignore
+            const liParent = element.parentElement.parentElement;
+
+            todoStore.toggleTodoStatus(liParent.getAttribute("data-id"));
+            displayTodos();
+        }
     });
 };
