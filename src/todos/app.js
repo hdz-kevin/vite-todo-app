@@ -42,15 +42,8 @@ export const App = (elementId) => {
     });
 
     todoList.addEventListener("click", (event) => {
-        const isACheckbox = (element) => element.classList.contains("toggle");
-        const element = event.target;
-
-        if (isACheckbox(element)) {
-            // @ts-ignore
-            const liParent = element.parentElement.parentElement;
-
-            todoStore.toggleTodoStatus(liParent.getAttribute("data-id"));
-            displayTodos();
-        }
+        // @ts-ignore
+        todoStore.toggleTodoStatus(event.target.closest('[data-id]').getAttribute("data-id"));
+        displayTodos();
     });
 };
