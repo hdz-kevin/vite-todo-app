@@ -11,9 +11,18 @@ const state = {
     filter: Filters.All,
 };
 
-const initStore = () => console.log(state);
+const initStore = () => {
+    loadStore();
 
-const loadStore = () => { throw new Error("Not implemented") };
+    console.log(state);
+};
+
+const loadStore = () => {
+    const { todos = [], filter = Filters.All } = JSON.parse(localStorage.getItem("state") ?? "{}");
+    
+    state.todos = todos;
+    state.filter = filter;
+};
 
 const persistState = () => {
     localStorage.setItem("state", JSON.stringify(state));
