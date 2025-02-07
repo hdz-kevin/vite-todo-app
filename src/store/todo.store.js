@@ -19,8 +19,8 @@ const initStore = () => {
 
 const loadStore = () => {
     const { todos = [], filter = Filters.All } = JSON.parse(localStorage.getItem("state") ?? "{}");
-    
-    state.todos = todos;
+
+    state.todos = todos.map(todo => Todo.fromLiteralObj(todo));
     state.filter = filter;
 };
 
@@ -64,6 +64,7 @@ const toggleTodoStatus = (todoId) => {
         throw new Error(`There is no task with id '${todoId}'`);
     
     for (const todo of state.todos) {
+        console.log(todo);
         if (todo.id === todoId) {
             todo.toggleStatus();
             break;
