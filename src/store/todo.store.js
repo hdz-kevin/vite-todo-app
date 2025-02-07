@@ -7,18 +7,17 @@ const Filters = {
 };
 
 const state = {
-    todos: [
-        new Todo("Arm Wrestling workout"),
-        new Todo("Talk with my friend"),
-        new Todo("Take a bath"),
-        new Todo("Take out the trash"),
-    ],
+    todos: [],
     filter: Filters.All,
 };
 
 const initStore = () => console.log(state);
 
-const loadStore = () => { throw new Error("Not implemented."); };
+const loadStore = () => { throw new Error("Not implemented") };
+
+const persistState = () => {
+    localStorage.setItem("state", JSON.stringify(state));
+};
 
 const getTodos = (filter = Filters.All) => {
     if (Filters[filter] === undefined)
@@ -43,6 +42,8 @@ const addTodo = (description) => {
         throw new Error("Description is required.");
 
     state.todos.push(new Todo(description));
+
+    persistState();
 };
 
 /**
@@ -59,6 +60,8 @@ const toggleTodoStatus = (todoId) => {
             break;
         }
     }
+
+    persistState();
 };
 
 /**
@@ -70,12 +73,18 @@ const deleteTodo = (todoId) => {
         throw new Error(`There is no task with id '${todoId}'`);
 
     state.todos = state.todos.filter(todo => todo.id !== todoId);
+
+    persistState();
 };
 
 /**
  * Delete all completed `todo` objects.
  */
-const deletedCompleted = () => state.todos = state.todos.filter(todo => !todo.done);
+const deletedCompleted = () => {
+    state.todos = state.todos.filter(todo => !todo.done);
+
+    persistState();
+}
 
 /**
  * @param {string} filter Posible values: [Filters.All | FIlters.Completed | Filters.Pending]
@@ -85,6 +94,8 @@ const setFilter = (filter = Filters.All) => {
         throw new Error(`"${filter}" is not a valid filter.`);
 
     state.filter = filter;
+
+    persistState();
 };
 
 const getCurrentFilter = () => state.filter;
