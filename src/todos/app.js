@@ -6,6 +6,8 @@ const Selectors = {
     TodoList: ".todo-list",
     NewTodoInput: "#new-todo-input",
     ClearCompleted: ".clear-completed",
+    Filters: ".filters",
+    SelectedFilter: ".selected",
 };
 
 /**
@@ -24,12 +26,18 @@ export const App = (elementId) => {
         document.querySelector(elementId).append(app);
 
         displayTodos();
+
+        // Add "selected" class to anchor with data-filter = todoStore.getCurrentFilter()
+        document.querySelector(`.filters a[data-filter=${todoStore.getCurrentFilter()}]`)
+                .classList
+                .add(Selectors.SelectedFilter);
     })();
 
-    // HTML element references
+    // HTML references
     const newTodoInput = document.querySelector(Selectors.NewTodoInput),
           todoList = document.querySelector(Selectors.TodoList),
-          clearCompletedBtn = document.querySelector(Selectors.ClearCompleted);
+          clearCompletedBtn = document.querySelector(Selectors.ClearCompleted),
+          filtersUl = document.querySelector(Selectors.Filters);
 
     // Listeners
     newTodoInput.addEventListener("keyup", (/** @type {KeyboardEvent} event */ event) => {
@@ -53,6 +61,22 @@ export const App = (elementId) => {
 
     clearCompletedBtn.addEventListener("click", () => {
         todoStore.deletedCompleted();
+
+        displayTodos();
+    });
+
+    filtersUl.addEventListener("click", (event) => {
+        if (!(event.target instanceof HTMLAnchorElement)) return;
+
+        filtersUl.querySelector(`a.${Selectors.SelectedFilter}`).classList.remove(Selectors.SelectedFilter);
+        const a = event.target;
+        a.classList.add(Selectors.SelectedFilter);
+
+        try {
+            todoStore.setFilter(todoStore.Filters[a.getAttribute("data-filter")]);
+        } catch (err) {
+            console.log(err);
+        }
 
         displayTodos();
     });
