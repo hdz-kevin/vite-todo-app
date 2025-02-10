@@ -2,9 +2,10 @@ import html from "./app.html?raw";
 import todoStore from "../store/todo.store";
 import { renderTodos } from "./use-cases";
 
-const ElementSelectors = {
+const Selectors = {
     TodoList: ".todo-list",
     NewTodoInput: "#new-todo-input",
+    ClearCompleted: ".clear-completed",
 };
 
 /**
@@ -14,7 +15,7 @@ const ElementSelectors = {
 export const App = (elementId) => {
     const displayTodos = () => {
         const todos = todoStore.getTodos(todoStore.getCurrentFilter());
-        renderTodos(todos, ElementSelectors.TodoList);
+        renderTodos(todos, Selectors.TodoList);
     };
 
     (() => {
@@ -26,9 +27,9 @@ export const App = (elementId) => {
     })();
 
     // HTML element references
-    /** @type {HTMLInputElement} */
-    const newTodoInput = document.querySelector(ElementSelectors.NewTodoInput);
-    const todoList = document.querySelector(ElementSelectors.TodoList);
+    const newTodoInput = document.querySelector(Selectors.NewTodoInput),
+          todoList = document.querySelector(Selectors.TodoList),
+          clearCompletedBtn = document.querySelector(Selectors.ClearCompleted);
 
     // Listeners
     newTodoInput.addEventListener("keyup", (/** @type {KeyboardEvent} event */ event) => {
@@ -46,6 +47,12 @@ export const App = (elementId) => {
         const isDestroyerBtn = element.classList.contains("destroy");
 
         isDestroyerBtn ? todoStore.deleteTodo(todoId) : todoStore.toggleTodoStatus(todoId);
+
+        displayTodos();
+    });
+
+    clearCompletedBtn.addEventListener("click", () => {
+        todoStore.deletedCompleted();
 
         displayTodos();
     });
