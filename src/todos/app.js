@@ -1,6 +1,7 @@
 import html from "./app.html?raw";
 import todoStore from "../store/todo.store";
 import { renderTodos } from "./use-cases";
+import { renderPendingCount } from "./use-cases/render-pending-count";
 
 const Selectors = {
     TodoList: ".todo-list",
@@ -8,6 +9,7 @@ const Selectors = {
     ClearCompleted: ".clear-completed",
     Filters: ".filters",
     SelectedFilter: ".selected",
+    PendingCount: "#pending-count",
 };
 
 /**
@@ -15,10 +17,9 @@ const Selectors = {
  * @param {string} elementId 
  */
 export const App = (elementId) => {
-    const displayTodos = () => {
-        const todos = todoStore.getTodos(todoStore.getCurrentFilter());
-        renderTodos(todos, Selectors.TodoList);
-    };
+    const displayTodos = () => renderTodos(todoStore.getTodos(todoStore.getCurrentFilter()), Selectors.TodoList);
+    
+    const setPendingCount = () => renderPendingCount(Selectors.PendingCount);
 
     (() => {
         const app = document.createElement("div");
@@ -31,6 +32,8 @@ export const App = (elementId) => {
         document.querySelector(`.filters a[data-filter=${todoStore.getCurrentFilter()}]`)
                 .classList
                 .add(Selectors.SelectedFilter);
+
+        setPendingCount();
     })();
 
     // HTML references
@@ -47,6 +50,8 @@ export const App = (elementId) => {
         todoStore.addTodo(newTodoInput.value);
         displayTodos();
         newTodoInput.value = "";
+
+        setPendingCount();
     });
 
     todoList.addEventListener("click", (event) => {
@@ -57,6 +62,7 @@ export const App = (elementId) => {
         isDestroyerBtn ? todoStore.deleteTodo(todoId) : todoStore.toggleTodoStatus(todoId);
 
         displayTodos();
+        setPendingCount();
     });
 
     clearCompletedBtn.addEventListener("click", () => {
