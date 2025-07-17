@@ -18,7 +18,7 @@ const Selectors = {
  */
 export const App = (elementId) => {
     const displayTodos = () => renderTodos(todoStore.getTodos(todoStore.getCurrentFilter()), Selectors.TodoList);
-    
+
     const setPendingCount = () => renderPendingCount(Selectors.PendingCount);
 
     (() => {
@@ -30,17 +30,17 @@ export const App = (elementId) => {
 
         // Add "selected" class to anchor with data-filter = todoStore.getCurrentFilter()
         document.querySelector(`.filters a[data-filter=${todoStore.getCurrentFilter()}]`)
-                .classList
-                .add(Selectors.SelectedFilter);
+            .classList
+            .add(Selectors.SelectedFilter);
 
         setPendingCount();
     })();
 
     // HTML references
     const newTodoInput = document.querySelector(Selectors.NewTodoInput),
-          todoList = document.querySelector(Selectors.TodoList),
-          clearCompletedBtn = document.querySelector(Selectors.ClearCompleted),
-          filtersUl = document.querySelector(Selectors.Filters);
+        todoList = document.querySelector(Selectors.TodoList),
+        clearCompletedBtn = document.querySelector(Selectors.ClearCompleted),
+        filtersUl = document.querySelector(Selectors.Filters);
 
     // Listeners
     newTodoInput.addEventListener("keyup", (/** @type {KeyboardEvent} event */ event) => {
